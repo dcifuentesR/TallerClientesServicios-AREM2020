@@ -7,17 +7,25 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import edu.escuelaing.arem.handlers.Handler;
+
 public class Server {
 
 	public static void main(String[] args) throws IOException {
+		Handler handler;
+		
 		ServerSocket serverSocket = null;
 		
 		try {
-			serverSocket = new ServerSocket(35000);
+			serverSocket = new ServerSocket(getPort());
 		} catch (IOException e) {
-			// TODO: handle exception
+			e.printStackTrace();// TODO: handle exception
 		}
+		PrintWriter out;
+		BufferedReader in;
 		
+		while(true)
+		{
 		Socket clientSocket = null;
 		
 		try {
@@ -27,26 +35,34 @@ public class Server {
 			e.printStackTrace();
 		}
 		
-		PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-		BufferedReader in = new BufferedReader(
+		
+		out = new PrintWriter(clientSocket.getOutputStream(), true);
+		in = new BufferedReader(
 				new InputStreamReader(
 						clientSocket.getInputStream()));
+				
 		
 		String inputLine;
-		int response;
+		String outputLine;
+		String request;
 		
-		while((inputLine = in.readLine())!=null) {
-			int sq =Integer.parseInt(inputLine);
-			response = sq*sq;
-			out.println(response);
-			if(inputLine.equals("exit"))
-				break;
+			while ((inputLine = in.readLine()) != null) {
+				if (inputLine.matches("(GET)+.*")) {
+					request = inputLine.split(" ")[1];
+				}
+				if(!in.ready())
+					break;
+				
+			} 
+			out.close();
+			in.close();
+				
+
 		}
-		
-		out.close();
-		in.close();
-		clientSocket.close();
-		serverSocket.close();
+	}
+	
+	static int getPort() {
+		return System.getenv("PORT") != null ? Integer.parseInt(System.getenv("PORT")) : 4567;
 	}
 
 }
