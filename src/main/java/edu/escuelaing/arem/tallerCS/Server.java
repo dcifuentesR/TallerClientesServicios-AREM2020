@@ -8,6 +8,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import edu.escuelaing.arem.handlers.Handler;
+import edu.escuelaing.arem.handlers.impl.HTMLHandler;
+import edu.escuelaing.arem.handlers.impl.ICOHandler;
+import edu.escuelaing.arem.handlers.impl.PNGHandler;
 
 public class Server {
 
@@ -44,16 +47,30 @@ public class Server {
 		
 		String inputLine;
 		String outputLine;
-		String request;
+		String request = null;
 		
 			while ((inputLine = in.readLine()) != null) {
 				if (inputLine.matches("(GET)+.*")) {
 					request = inputLine.split(" ")[1];
 				}
 				if(!in.ready())
-					break;
-				
-			} 
+					break;	
+			}
+			
+		request = request == null ? "/error.html" : request;
+            request = request.equals("/") ? "/index.html" : request;
+			if (request.matches("(/apps).*")) {
+
+			} else if (request.matches(".*(.html)")) {
+				handler = new HTMLHandler();
+				handler.handle(out, clientSocket.getOutputStream(), request);
+			} else if (request.matches(".*(.PNG)")) {
+				handler = new PNGHandler();
+				handler.handle(out, clientSocket.getOutputStream(), request);
+			} else if (request.matches(".*(.ico)")) {
+				handler = new ICOHandler();
+				handler.handle(out, clientSocket.getOutputStream(), request);
+			}
 			out.close();
 			in.close();
 				
