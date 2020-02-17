@@ -21,6 +21,7 @@ public class Server {
 		
 		try {
 			serverSocket = new ServerSocket(getPort());
+			System.out.println(getPort());
 		} catch (IOException e) {
 			e.printStackTrace();// TODO: handle exception
 		}
