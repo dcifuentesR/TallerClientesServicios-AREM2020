@@ -79,6 +79,10 @@ public class Server {
 		}
 	}
 	
+	/**
+	 * This method returns the port that the server is going to use
+	 * @return The value of the 'PORT' variable or '4567' if the variable is not found.
+	 */
 	static int getPort() {
 		return System.getenv("PORT") != null ? Integer.parseInt(System.getenv("PORT")) : 4567;
 	}
