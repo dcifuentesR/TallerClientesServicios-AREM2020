@@ -21,9 +21,11 @@ This command will generate the documentation in the folder
 ```
  /target/site/apidocs/
  ```
+ 
+ This project is also available in this heroku website [in this Heroku website](https://cliente-servidor-dcifuentes.herokuapp.com/).
 ### Prerequisites
 
-You will need maven and java installed on your machine to employ this program
+You will need maven and java installed on your machine to run this program locally
 
 ## Running the tests
 
